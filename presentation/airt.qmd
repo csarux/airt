@@ -1,0 +1,20 @@
+---
+title: "Inteligencia artificial en radioterapia"
+subtitle: Simposio de Técnicos. Congreso conjunto SEFM SEPR. Toledo 2025
+format: 
+  clean-revealjs:
+    logo: images/2505-SEFM-SEPR_Toledo_400x122-400x122.png
+    footer: "IA en Radioterapia"
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+author:
+  - name: César Rodríguez
+    email: cesar.rodriguez@salud.madrid.org
+    affiliations: Hospital Universitario de Fuenlabrada
+css: styles.css
+---
+
+## {.smaller}
+
+### Requisitos
