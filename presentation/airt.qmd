@@ -34,7 +34,7 @@ css: styles.css
 - Detección de tumores en mamografías.
 
 :::{.callout-note icon="true"}
-## Relevancia de la IA
+## Cotidaneidad de la IA
 Convivimos con la IA todos los días, incluso sin darnos cuenta. En medicina, puede ser una gran aliada.
 :::
 
@@ -138,7 +138,7 @@ Sabemos cómo funciona y **funciona** (*para lo que está programado*)
 Sabemos cómo funciona pero **no funciona** 
 :::
 
-# ¿Cómo podemos hacer pensar a una máquina?
+# ¿Cómo podemos hacer *pensar* a una máquina?
 
 ---
 
@@ -151,9 +151,9 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 # Datos simulados: precio de vivienda (en miles de euros) vs superficie (m²)
-np.random.seed(42)
-m_true = 3.2  # precio por m² en miles de euros
-b_true = 50.0  # precio base (mínimo, en miles de euros)
+np.random.seed(123)
+m_true = 3.  # precio por m² en miles de euros
+b_true = 100.0  # precio base (mínimo, en miles de euros)
 x = np.linspace(30, 150, 20)  # superficies entre 30 m² y 150 m²
 y = m_true * x + b_true + np.random.normal(scale=20.0, size=len(x))  # precios con ruido
 
@@ -248,16 +248,20 @@ fig.show()
 
 ### Elementos clave 
 
-- El sistema establece el modelo minimizando una ***función de coste*** que tiene que ser definida previmente
+- El sistema establece el modelo minimizando una ***función de coste*** que tiene que ser definida previamente
 
 :::{.callout-tip icon="true"}
-## Cálculos de mminimización 
+## Cálculos de minimización 
 La minimización es proceso programable por los procedimientos de software tradicional
 :::
 
-#### Modelos que dependen de varias variables
+:::{.callout-important icon="true"}
+## Importancia del modelo
+El modelo nos permite **hacer predicciones** reduciendo la influencia de variables ocultas
+:::
+
+#### Dificultades con modelos que dependen de varias variables
 - No todas las variables que podemos introducir en el modelo lo *sujetan* con la misma intensidad
-- El modelo nos permite hacer predicciones reduciendo la influencia de variables ocultas
 - Algunas variables presentan correlaciones, es decir, la variación de una implica la variación de otra.
 
 
@@ -346,6 +350,57 @@ fig.show()
 
 ```
 
+---
+
+### **Overfitting** o sobreajuste
+
+```{python}
+
+import numpy as np
+import plotly.graph_objects as go
+
+# Datos originales: precio vs superficie
+np.random.seed(123)
+m_true = 3.0  # mil €/m²
+b_true = 100.0
+x = np.linspace(50, 150, 20)
+y = m_true * x + b_true + np.random.normal(scale=15.0, size=len(x))
+
+# Ajuste polinómico de grado alto (overfitting)
+degree = len(x)
+coefs = np.polyfit(x, y, degree)
+poly = np.poly1d(coefs)
+
+# Evaluar el modelo en una malla más fina
+x_fine = np.linspace(40, 160, 500)
+y_poly = poly(x_fine)
+
+# Crear figura
+fig = go.Figure()
+
+# Datos
+fig.add_trace(go.Scatter(x=x, y=y, mode='markers', name='Datos', marker=dict(color='black')))
+
+# Ajuste polinómico (overfitting)
+fig.add_trace(go.Scatter(x=x_fine, y=y_poly, mode='lines', name='Modelo sobreajustado', line=dict(color='red', dash='dot')))
+
+fig.update_yaxes(range=[200, 600])
+
+# Layout
+fig.update_layout(
+    xaxis_title="Superficie (m²)",
+    yaxis_title="Precio (miles de €)",
+    width=800,
+    height=500
+)
+
+fig.show()
+
+```
+
+- El modelo predice muy bien lo que ha aprendido
+- Pierde la capacidad de predecir situaciones no entrenadas
+
 # Ejemplos de minimización. Aplicación a la radioterapia
 
 ## Optimación de fluencias para tratamientos VMAT
@@ -392,26 +447,59 @@ Cada neurona hace una operación: pondera entradas, suma, aplica una función.
 
 ### Estructura típica
 
+::: {.columns}
+:::: {.column width="50%"}
 - **Capa de entrada**: recibe la imagen o los datos.  
 - **Capas ocultas**: transforman progresivamente la información.  
   - Convolución  
   - Activación (triggers)  
   - Normalización / reducción  
 - **Capa de salida**: genera una predicción.
+::::
+:::: {.column width="50%"}
+![](images/FullyConnectedLayers.webp){fig-align="center" }
+::::
+:::
 
 ---
 
-## Detalles de las capas {.samller}
+### Detalles de las capas
 
-### 🔸 a) Capa de convolución *(solo en redes de imagen)*
+#### 🔸 Capa de convolución *(solo en redes de imagen)*
 
 - Aplica pequeños filtros que se desplazan por la imagen.  
+
+![](images/diagrama_convolucion.png)
+
 - Cada filtro detecta un patrón específico: borde, textura, forma…  
 - Resultado: un mapa de activación que destaca ese patrón.  
 
-📌 Analógico a cómo un TSR detecta un artefacto en RM: buscando un patrón.  
+---
 
-📌 **Visual sugerido**: imagen TAC → mapa de bordes con un filtro simple.
+## {.smaller}
+
+#### Visualización de la salida de algunos filtros de convolución
+
+
+::: {.columns}
+:::: {.column width="50%"}
+![](images/BordesHorizontales.webp){fig-align="right" height="100px"}
+::::
+:::: {.column width="50%"}
+![](images/BordesVerticales.webp){fig-align="left" height="100px"}
+::::
+:::
+
+::: {.columns}
+:::: {.column width="60%"}
+![](images/SalidaFiltrosConvolucionPrimeraCapa.png){fig-align="center"}
+::::
+:::: {.column width="40%"}
+- En el diseño del modelo se fija el número de filtros de convolución
+- Los detalles de cada filtro, sus valores concretos, se establecen durante el entrenamiento, son parámetros ajustables del modelo
+- En general la salida de los filtros de convolución pueden tener una interpretación no trivial para un humano
+::::
+:::
 
 ---
 
