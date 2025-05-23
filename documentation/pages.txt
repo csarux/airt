@@ -1,0 +1,6 @@
+Animación de la capa de convolución
+https://cs231n.github.io/convolutional-networks/
+Demo de las salidas de las capas
+https://cs.stanford.edu/people/karpathy/convnetjs/demo/cifar10.html
+Animaciones de las distintas capas de la red en Medium
+https://sarathpanat.medium.com/all-about-convolutional-neural-network-cnn-6ccce6738958
