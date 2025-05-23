@@ -5,6 +5,7 @@ format:
   clean-revealjs:
     logo: images/2505-SEFM-SEPR_Toledo_400x122-400x122.png
     footer: "IA en Radioterapia"
+  pptx: {}
 html-math-method:
   method: mathjax
   url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
@@ -15,6 +16,458 @@ author:
 css: styles.css
 ---
 
+
+# ¿Qué es la inteligencia artificial?
+
+---
+
+## 1. Definición de IA {.smaller}
+
+> La [**inteligencia artificial**]{.alert} (IA) es una rama de la informática que [**permite a las máquinas imitar funciones cognitivas**]{.alert} humanas como aprender, razonar, resolver problemas o tomar decisiones.
+
+### Ejemplos cotidianos de IA
+
+- Filtros de spam en el correo.
+- Recomendaciones en Netflix o Spotify.
+- Traductores automáticos.
+- Chatbots.
+- Detección de tumores en mamografías.
+
+:::{.callout-note icon="true"}
+## Relevancia de la IA
+Convivimos con la IA todos los días, incluso sin darnos cuenta. En medicina, puede ser una gran aliada.
+:::
+
+---
+
+## 2. ¿En qué se diferencia de un software tradicional?
+
+| Característica         | Software tradicional             | Inteligencia Artificial                |
+|------------------------|----------------------------------|----------------------------------------|
+| Instrucciones          | Programadas explícitamente       | Aprende de datos                       |
+| Capacidad de adaptación| Fija                             | Se adapta con entrenamiento            |
+| Ejemplo en radioterapia| Cálculo de dosis con fórmulas    | Segmentación automática                |{.smaller}
+
+> ✅ **Analogía culinaria**:  
+> El software tradicional es como una receta;  
+> la IA es como un cocinero que aprende probando.
+
+---
+
+## 3. Tipos principales de IA{.smaller}
+
+### IA simbólica
+
+- Basada en reglas lógicas.
+- Utiliza sistemas expertos.
+- Es la forma más antigua de IA.
+
+### Machine Learning (ML)
+
+- Aprende patrones a partir de datos.
+- Necesita entrenamiento con muchos ejemplos.
+- Se ha convertido en el núcleo de la IA moderna.
+
+### Deep Learning (DL)
+
+- Subconjunto de ML.
+- Utiliza redes neuronales profundas.
+- Muy eficaz en imagen médica.
+
+---
+
+### Estructura de una red neuronal
+
+![](images/NeuronalNetwork.png){fig-align="center"}
+
+
+# Ejemplos
+
+---
+ 
+### Software tradicional. Cálculo de la dosis
+
+::: {.smaller-columns}
+::: {.columns}
+:::: {.column width="30%"}
+![](images/CalculoDosis.png)
+::::
+:::: {.column width="70%"}
+$$
+\begin{aligned}
+\colorbox{AquaMarine}{$\displaystyle\Omega_\gamma \cdot \nabla \Phi_\gamma(r, \Omega_\gamma, E_\gamma)$} = \\
+\colorbox{Apricot}{$\displaystyle\rho_e(r) \int_0^\infty \int_{4\pi} \tilde{\sigma}_{C,\gamma}(E'_\gamma, E_\gamma, \Omega'_\gamma \cdot \Omega_\gamma) 
+\Phi_\gamma(r, \Omega'_\gamma, E'_\gamma) d\Omega'_\gamma dE'_\gamma $}
+\\
+- \colorbox{SkyBlue}{$\displaystyle\rho_e(r) \sigma_{\text{totC},\gamma}(E_\gamma) \Phi_\gamma(r, \Omega_\gamma, E_\gamma)$}
+\end{aligned}
+$$
+
+Ecuación de Boltzmann de transporte de radiación
+
+:::: 
+:::
+:::
+
+- Problemas complejos que se pueden reducir a algoritmos programables
+- La velocidad de cálculo de la máquina supera completamente lo que es realizable por un humano
+
+:::{.callout-tip icon="true"}
+## Paradigma 
+Sabemos cómo funciona y **funciona** (*para lo que está programado*)
+:::
+
+---
+
+### IA tradicional (árboles lógicos). Reconocimiento de patrones
+
+::: {.columns}
+:::: {.column width="50%"}
+![Reconocimiento de caracteres](images/handwrittendigits.png)
+::::
+:::: {.column width="50%"}
+![Reconocimiento facial](images/CalculoDosis.png){height="150px"}
+:::: 
+:::
+
+- La complejidad del problema crece tan rápidamente que son necesarias estructuras muy complicadas y muchos recursos.
+- El humano supera con cierta facilidad los resultados de la máquina
+
+:::{.callout-important icon="true"}
+## Paradigma 
+Sabemos cómo funciona pero **no funciona** 
+:::
+
+# ¿Cómo podemos hacer pensar a una máquina?
+
+---
+
+## Problemas de minimización
+### Fundamentos matemáticos para el entrenamiento de sistemas
+
+```{python}
+import numpy as np
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+# Datos simulados: precio de vivienda (en miles de euros) vs superficie (m²)
+np.random.seed(42)
+m_true = 3.2  # precio por m² en miles de euros
+b_true = 50.0  # precio base (mínimo, en miles de euros)
+x = np.linspace(30, 150, 20)  # superficies entre 30 m² y 150 m²
+y = m_true * x + b_true + np.random.normal(scale=20.0, size=len(x))  # precios con ruido
+
+# Rango de valores de pendiente (precio por m²)
+m_values = np.linspace(m_true - 2, m_true + 2, 50)
+J_values = [np.sum((y - (m * x + b_true))**2) for m in m_values]
+
+# Crear figura con subgráficos
+fig = make_subplots(rows=1, cols=2, subplot_titles=["Ajuste lineal: Precio vs Superficie", "Función de coste J(m)"])
+
+# Añadir trazas fijas (siempre visibles)
+fig.add_trace(go.Scatter(x=x, y=y, mode='markers', name='Datos reales', marker=dict(color='black')), row=1, col=1)
+fig.add_trace(go.Scatter(x=m_values, y=J_values, mode='lines', name='Función de coste J(m)', line=dict(color='black')), row=1, col=2)
+
+# Trazas dinámicas iniciales
+m0 = m_values[0]
+y_fit0 = m0 * x + b_true
+J0 = J_values[0]
+
+ajuste_inicial = go.Scatter(x=x, y=y_fit0, mode='lines', name='Ajuste lineal', line=dict(color='red'))
+punto_J = go.Scatter(x=[m0], y=[J0], mode='markers', name='Valor de J', marker=dict(color='red', size=10))
+
+fig.add_trace(ajuste_inicial, row=1, col=1)
+fig.add_trace(punto_J, row=1, col=2)
+
+# Frames para animar
+frames = []
+
+for i, m in enumerate(m_values):
+    y_fit = m * x + b_true
+    J = J_values[i]
+    frame = go.Frame(
+        data=[
+            # Puntos originales (subplot 1,1)
+            go.Scatter(x=x, y=y, mode='markers', marker=dict(color='black'),
+                       xaxis='x1', yaxis='y1'),
+
+            # Línea de ajuste (subplot 1,1)
+            go.Scatter(x=x, y=y_fit, mode='lines', line=dict(color='red'),
+                       xaxis='x1', yaxis='y1'),
+
+            # Curva de función de coste J(m) (subplot 1,2)
+            go.Scatter(x=m_values, y=J_values, mode='lines', line=dict(color='black'),
+                       xaxis='x2', yaxis='y2'),
+
+            # Punto rojo J(m) (subplot 1,2)
+            go.Scatter(x=[m], y=[J], mode='markers', marker=dict(color='red', size=10),
+                       xaxis='x2', yaxis='y2'),
+        ],
+        name=str(round(m, 2))
+    )
+    frames.append(frame)
+
+# Slider
+steps = [dict(method="animate",
+              args=[[str(round(m, 2))],
+                    dict(mode="immediate",
+                         frame=dict(duration=0, redraw=True),
+                         transition=dict(duration=0))],
+              label=str(round(m, 2)))
+         for m in m_values]
+
+sliders = [dict(
+    steps=steps,
+    transition=dict(duration=0),
+    x=0.1,
+    y=0,
+    currentvalue=dict(font=dict(size=16), prefix="Precio por m² = ", visible=True, xanchor='center'),
+    len=0.8
+)]
+
+# Aplicar layout con solo el slider
+fig.update_layout(
+    sliders=sliders,
+    height=500,
+    width=1000
+)
+
+# Asignar los frames directamente
+fig.frames = frames
+
+# Etiquetas de ejes
+fig.update_xaxes(title_text="Superficie (m²)", row=1, col=1)
+fig.update_yaxes(title_text="Precio (miles de euros)", row=1, col=1)
+fig.update_xaxes(title_text="Precio por m² (miles de euros)", row=1, col=2)
+fig.update_yaxes(title_text="J(m)", row=1, col=2)
+
+fig.show()
+
+```
+---
+
+### Elementos clave 
+
+- El sistema establece el modelo minimizando una ***función de coste*** que tiene que ser definida previmente
+
+:::{.callout-tip icon="true"}
+## Cálculos de mminimización 
+La minimización es proceso programable por los procedimientos de software tradicional
+:::
+
+#### Modelos que dependen de varias variables
+- No todas las variables que podemos introducir en el modelo lo *sujetan* con la misma intensidad
+- El modelo nos permite hacer predicciones reduciendo la influencia de variables ocultas
+- Algunas variables presentan correlaciones, es decir, la variación de una implica la variación de otra.
+
+
+---
+
+### Varias variables con diferentes correlaciones
+
+```{python}
+
+import numpy as np
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+np.random.seed(123)
+
+# Simulación 1: Precio vs Superficie (alta correlación)
+m1_true = 3.0  # mil €/m²
+b1_true = 100.0
+x1 = np.linspace(50, 150, 20)  # m²
+y1 = m1_true * x1 + b1_true + np.random.normal(scale=15.0, size=len(x1))
+
+# Simulación 2: Precio vs Altura (menor correlación)
+m2_true = 5.0  # mil €/planta
+b2_true = 200.0
+x2 = np.linspace(1, 20, 20)  # plantas
+y2 = m2_true * x2 + b2_true + np.random.normal(scale=40.0, size=len(x2))
+
+# Ajustes
+m1_fit, b1_fit = np.polyfit(x1, y1, 1)
+y1_fit = m1_fit * x1 + b1_fit
+
+m2_fit, b2_fit = np.polyfit(x2, y2, 1)
+y2_fit = m2_fit * x2 + b2_fit
+
+# Funciones de coste con rango de 5 unidades
+m_values1 = np.linspace(m1_fit - 2.5, m1_fit + 2.5, 100)
+J_values1 = [np.sum((y1 - (m * x1 + b1_true))**2) for m in m_values1]
+
+m_values2 = np.linspace(m2_fit - 2.5, m2_fit + 2.5, 100)
+J_values2 = [np.sum((y2 - (m * x2 + b2_true))**2) for m in m_values2]
+
+# Crear figura con 4 subgráficos
+fig = make_subplots(rows=2, cols=2, subplot_titles=[
+    "Precio vs Superficie",
+    "Función de coste J(m): Superficie",
+    "Precio vs Altura",
+    "Función de coste J(m): Altura"
+])
+
+# Arriba izquierda: Ajuste superficie
+fig.add_trace(go.Scatter(x=x1, y=y1, mode='markers', name='Datos superficie', marker=dict(color='black')), row=1, col=1)
+fig.add_trace(go.Scatter(x=x1, y=y1_fit, mode='lines', name='Ajuste superficie', line=dict(color='red')), row=1, col=1)
+
+# Arriba derecha: Coste superficie
+fig.add_trace(go.Scatter(x=m_values1, y=J_values1, mode='lines', name='J(m): superficie', line=dict(color='black')), row=1, col=2)
+
+# Abajo izquierda: Ajuste altura
+fig.add_trace(go.Scatter(x=x2, y=y2, mode='markers', name='Datos altura', marker=dict(color='black')), row=2, col=1)
+fig.add_trace(go.Scatter(x=x2, y=y2_fit, mode='lines', name='Ajuste altura', line=dict(color='red')), row=2, col=1)
+
+# Abajo derecha: Coste altura
+fig.add_trace(go.Scatter(x=m_values2, y=J_values2, mode='lines', name='J(m): altura', line=dict(color='black')), row=2, col=2)
+
+# Etiquetas
+fig.update_xaxes(title_text="Superficie (m²)", row=1, col=1)
+fig.update_yaxes(title_text="Precio (miles de €)", row=1, col=1)
+fig.update_xaxes(title_text="Pendiente m (mil €/m²)", row=1, col=2)
+fig.update_yaxes(title_text="J(m)", row=1, col=2)
+
+fig.update_xaxes(title_text="Altura (plantas)", row=2, col=1)
+fig.update_yaxes(title_text="Precio (miles de €)", row=2, col=1)
+fig.update_xaxes(title_text="Pendiente m (mil €/planta)", row=2, col=2)
+fig.update_yaxes(title_text="J(m)", row=2, col=2)
+
+fig.update_yaxes(range=[0, 1.e6], row=1, col=2)
+fig.update_yaxes(range=[0, 1.e6], row=2, col=2)
+
+fig.update_layout(
+    height=650,
+    width=800,
+    showlegend=False
+)
+
+fig.show()
+
+
+```
+
+# Ejemplos de minimización. Aplicación a la radioterapia
+
+## Optimación de fluencias para tratamientos VMAT
+
+![Tratamiento adyuvante de un hemicuello. Dosis de prescripción 66 Gy al primario y 56.1 Gy a las cadenas ganglionares](images/testORL.png)
+
+---
+
+##
+
+![Definición del problema de optimización](images/DefinicionObjetivosOptimizacionVMAT.png)
+
+> La **función de coste no** es **única**.  
+> Hay muchas funciones de coste que producen una solución válida;  
+> se introduce variabilidad entre los planificadores.  
+> Es difícil saber si la planificación está realmente optimizada.  
+
+---
+
+## {.smaller}
+#### Correlaciones entre parámetros
+
+![El tiroides en parte esta incluido en el PTV de cadenas](images/TiroidesRealista.PNG)
+
+---
+
+## {.smaller}
+#### Correlaciones entre parámetros
+
+![Si forzamos el tiroides afectamos al PTV](images/TiroidesForzado.PNG)
+
+# ¿Cómo funciona una red neuronal artificial?
+
+---
+
 ## {.smaller}
 
-### Requisitos
+### Analogía visual  
+🧠 **Red neuronal artificial = Fábrica en cadena**
+
+Cada capa recibe una entrada, la procesa y pasa el resultado a la siguiente.
+
+Cada neurona hace una operación: pondera entradas, suma, aplica una función.
+
+### Estructura típica
+
+- **Capa de entrada**: recibe la imagen o los datos.  
+- **Capas ocultas**: transforman progresivamente la información.  
+  - Convolución  
+  - Activación (triggers)  
+  - Normalización / reducción  
+- **Capa de salida**: genera una predicción.
+
+---
+
+## Detalles de las capas {.samller}
+
+### 🔸 a) Capa de convolución *(solo en redes de imagen)*
+
+- Aplica pequeños filtros que se desplazan por la imagen.  
+- Cada filtro detecta un patrón específico: borde, textura, forma…  
+- Resultado: un mapa de activación que destaca ese patrón.  
+
+📌 Analógico a cómo un TSR detecta un artefacto en RM: buscando un patrón.  
+
+📌 **Visual sugerido**: imagen TAC → mapa de bordes con un filtro simple.
+
+---
+
+### 🔸 b) Función de activación (“trigger”)
+
+- Imita el disparo neuronal: una función no lineal decide si la neurona “se activa”.  
+- Ejemplo: función ReLU (Rectified Linear Unit):  
+  - Salida = 0 si entrada < 0  
+  - Salida = entrada si entrada ≥ 0  
+- Esto permite que la red aprenda relaciones complejas, no lineales.
+
+📌 **Visual sugerido**: gráfica de la función ReLU.
+
+---
+
+### 🔸 c) Pooling (reducción)
+
+- Reduce la dimensión de la información manteniendo lo importante.  
+- Equivalente a hacer un “zoom out”: pierde detalle, gana eficiencia.  
+- En planificación, sería como agrupar vóxeles en una región de interés.
+
+---
+
+## ¿Cómo aprende una red neuronal?
+
+---
+
+### 🔹 a) Entrenamiento = Minimizar un error
+
+- Se pasa una imagen por la red → predicción.  
+- Se compara con la etiqueta real → función de pérdida.  
+- Se ajustan los pesos de las conexiones para reducir el error.  
+- Este proceso se repite con millones de imágenes.  
+
+🔧 “Entrenar una red neuronal es como hacer IMRT: queremos encontrar la mejor combinación de pesos (parámetros) que cumplan unos objetivos y minimicen una función de coste.”
+
+---
+
+### 🔹 b) Función de coste = “Plan de calidad”
+
+- Ejemplo de función de pérdida para segmentación: penaliza si el contorno predicho no coincide con el real.  
+- Cuanto peor la predicción, mayor el coste.  
+- El algoritmo busca los pesos que minimicen ese coste.
+
+📌 Comparación útil:  
+- En planificación: DVH fuera de tolerancia = mal plan.  
+- En IA: contorno incorrecto = alto coste → se corrige.
+
+---
+
+### 🔹 c) Optimización por retropropagación
+
+- Se calcula el error.  
+- Se propaga hacia atrás a través de la red.  
+- Se ajustan los pesos paso a paso con técnicas como descenso de gradiente.
+
+📌 **Mensaje final del bloque**:  
+No es magia: es matemáticas + prueba y error + millones de datos.
+
