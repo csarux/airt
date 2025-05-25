@@ -56,6 +56,8 @@ Convivimos con la IA todos los días, incluso sin darnos cuenta. En medicina, pu
 
 ## 3. Tipos principales de IA{.smaller}
 
+::: {.columns}
+:::: {.column}
 ### IA simbólica
 
 - Basada en reglas lógicas.
@@ -74,12 +76,11 @@ Convivimos con la IA todos los días, incluso sin darnos cuenta. En medicina, pu
 - Utiliza redes neuronales profundas.
 - Muy eficaz en imagen médica.
 
----
-
-### Estructura de una red neuronal
-
-![](images/NeuronalNetwork.png){fig-align="center"}
-
+::::
+:::: {.column .bottom-align}
+![](images/MachineLearning_DeepLearning.png)
+::::
+:::
 
 # Ejemplos
 
@@ -95,22 +96,22 @@ Convivimos con la IA todos los días, incluso sin darnos cuenta. En medicina, pu
 :::: {.column width="70%"}
 $$
 \begin{aligned}
-\colorbox{AquaMarine}{$\displaystyle\Omega_\gamma \cdot \nabla \Phi_\gamma(r, \Omega_\gamma, E_\gamma)$} = \\
-\colorbox{Apricot}{$\displaystyle\rho_e(r) \int_0^\infty \int_{4\pi} \tilde{\sigma}_{C,\gamma}(E'_\gamma, E_\gamma, \Omega'_\gamma \cdot \Omega_\gamma) 
-\Phi_\gamma(r, \Omega'_\gamma, E'_\gamma) d\Omega'_\gamma dE'_\gamma $}
+\Omega_\gamma \cdot \nabla \Phi_\gamma(r, \Omega_\gamma, E_\gamma) = \\
+\rho_e(r) \int_0^\infty \int_{4\pi} \tilde{\sigma}_{C,\gamma}(E'_\gamma, E_\gamma, \Omega'_\gamma \cdot \Omega_\gamma) 
+\Phi_\gamma(r, \Omega'_\gamma, E'_\gamma) d\Omega'_\gamma dE'_\gamma
 \\
-- \colorbox{SkyBlue}{$\displaystyle\rho_e(r) \sigma_{\text{totC},\gamma}(E_\gamma) \Phi_\gamma(r, \Omega_\gamma, E_\gamma)$}
+- \rho_e(r) \sigma_{\text{totC},\gamma}(E_\gamma) \Phi_\gamma(r, \Omega_\gamma, E_\gamma)
 \end{aligned}
 $$
 
-Ecuación de Boltzmann de transporte de radiación
+Ecuación de Boltzmann de transporte de fotones
 
 :::: 
 :::
 :::
 
 - Problemas complejos que se pueden reducir a algoritmos programables
-- La velocidad de cálculo de la máquina supera completamente lo que es realizable por un humano
+- La velocidad de cálculo de la máquina supera completamente lo que es realizable por un ser humano
 
 :::{.callout-tip icon="true"}
 ## Paradigma 
@@ -123,10 +124,11 @@ Sabemos cómo funciona y **funciona** (*para lo que está programado*)
 
 ::: {.columns}
 :::: {.column width="50%"}
-![Reconocimiento de caracteres](images/handwrittendigits.png)
+![Reconocimiento de caracteres y facial](images/handwrittendigits.png)
 ::::
 :::: {.column width="50%"}
-![Reconocimiento facial](images/CalculoDosis.png){height="150px"}
+![](images/Jose.jpg){height="100px"} ![](images/Cesar.jpg){height="100px"} ![](images/Gema.jpg){height="100px"} ![](images/Eva.jpg){height="100px"} 
+
 :::: 
 :::
 
@@ -352,7 +354,7 @@ fig.show()
 
 ---
 
-### **Overfitting** o sobreajuste
+### **Overfitting** (sobreajuste)
 
 ```{python}
 
@@ -438,8 +440,8 @@ fig.show()
 
 ## {.smaller}
 
-### Analogía visual  
-🧠 **Red neuronal artificial = Fábrica en cadena**
+### Analogía 
+🧠 **Red neuronal artificial =** 🔧 **Fábrica en cadena**
 
 Cada capa recibe una entrada, la procesa y pasa el resultado a la siguiente.
 
@@ -495,9 +497,11 @@ Cada neurona hace una operación: pondera entradas, suma, aplica una función.
 ![](images/SalidaFiltrosConvolucionPrimeraCapa.png){fig-align="center"}
 ::::
 :::: {.column width="40%"}
+📌 
+
 - En el diseño del modelo se fija el número de filtros de convolución
 - Los detalles de cada filtro, sus valores concretos, se establecen durante el entrenamiento, son parámetros ajustables del modelo
-- En general la salida de los filtros de convolución pueden tener una interpretación no trivial para un humano
+- En general la salida de los filtros de convolución pueden tener una interpretación no trivial para un ser humano
 ::::
 :::
 
@@ -505,25 +509,152 @@ Cada neurona hace una operación: pondera entradas, suma, aplica una función.
 
 ### 🔸 b) Función de activación (“trigger”)
 
-- Imita el disparo neuronal: una función no lineal decide si la neurona “se activa”.  
+- Imita el disparo neuronal: una función no lineal ***decide si [la neurona se activa]{.alert}***.  
 - Ejemplo: función ReLU (Rectified Linear Unit):  
   - Salida = 0 si entrada < 0  
   - Salida = entrada si entrada ≥ 0  
-- Esto permite que la red aprenda relaciones complejas, no lineales.
 
-📌 **Visual sugerido**: gráfica de la función ReLU.
+::: {.columns}
+:::: {.column}
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Definimos la función ReLU
+def relu(x):
+    return np.maximum(0, x)
+
+# Creamos un conjunto de valores
+x = np.linspace(-10, 10, 1000)
+y = relu(x)
+
+# Graficamos
+plt.figure(figsize=(4, 2.7))
+plt.plot(x, y, label="ReLU(x)")
+plt.axhline(0, color='gray', lw=0.5)
+plt.axvline(0, color='gray', lw=0.5)
+plt.title("Función ReLU")
+plt.xlabel("x")
+plt.ylabel("ReLU(x)")
+plt.grid(True)
+plt.legend()
+plt.show()
+
+```
+::::
+:::: {.column}
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image
+from scipy.signal import convolve2d
+
+# === Paso 1: Cargar y preparar la imagen ===
+img_path = "images/Eva.jpg"  # Reemplaza con la ruta a tu imagen
+img = Image.open(img_path).convert("L")  # Escala de grises
+img = img.resize((256, 256))             # Redimensiona para facilidad
+img_array = np.array(img) / 255.0        # Normaliza a [0,1]
+
+# === Paso 2: Filtro de convolución (bordes verticales estilo Sobel) ===
+filtro = np.array([[1, 0, -1],
+                   [2, 0, -2],
+                   [1, 0, -1]])
+
+# Aplicar convolución 2D
+conv_output = convolve2d(img_array, filtro, mode='same', boundary='symm')
+
+# === Paso 3: Aplicar ReLU ===
+relu_output = np.maximum(0, conv_output)
+
+# === Paso 4: Mostrar los resultados ===
+plt.figure(figsize=(12, 4))
+
+plt.subplot(1, 3, 1)
+plt.imshow(img_array, cmap='gray')
+plt.title("Imagen original")
+plt.axis('off')
+
+plt.subplot(1, 3, 2)
+plt.imshow(conv_output, cmap='gray')
+plt.title("Convolución (bordes)")
+plt.axis('off')
+
+plt.subplot(1, 3, 3)
+plt.imshow(relu_output, cmap='gray')
+plt.title("Tras ReLU")
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+
+```
+::::
+:::
+
+- Esto permite que la red aprenda relaciones complejas, no lineales.
 
 ---
 
 ### 🔸 c) Pooling (reducción)
 
 - Reduce la dimensión de la información manteniendo lo importante.  
-- Equivalente a hacer un “zoom out”: pierde detalle, gana eficiencia.  
-- En planificación, sería como agrupar vóxeles en una región de interés.
+- Equivalente a hacer un ***[zoom out]{.alert}: pierde detalle, gana eficiencia***.  
 
----
+::: {.columns}
+:::: {.column}
+![](images/PoolingMaxScheme.png)
+::::
+:::: {.column}
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image
+from scipy.signal import convolve2d
+from skimage.measure import block_reduce
 
-## ¿Cómo aprende una red neuronal?
+# === Paso 1: Cargar y preparar la imagen ===
+img_path = "images/Eva.jpg"  # Reemplaza con tu imagen
+img = Image.open(img_path).convert("L")
+img = img.resize((256, 256))  # Tamaño fijo
+img_array = np.array(img) / 255.0
+
+# === Paso 2: Aplicar filtro de bordes (Sobel horizontal) ===
+filtro = np.array([[-1, 0, 1],
+                   [-2, 0, 2],
+                   [-1, 0, 1]])
+
+conv_output = convolve2d(img_array, filtro, mode='same', boundary='symm')
+
+# === Paso 3: Activación ReLU ===
+relu_output = np.maximum(0, conv_output)
+
+# === Paso 4: MaxPooling 4x4 ===
+# Reduce cada bloque de 4x4 a 1x1 (efecto "zoom out")
+pooled_output = block_reduce(relu_output, block_size=(4, 4), func=np.max)
+
+# === Paso 5: Visualización comparativa ===
+plt.figure(figsize=(10, 5))
+
+# Subgráfica 1: ReLU output original
+plt.subplot(1, 2, 1)
+plt.imshow(relu_output, cmap='gray')
+plt.title("ReLU (alta resolución)")
+plt.axis('off')
+
+# Subgráfica 2: ReLU tras MaxPooling (escalado al mismo tamaño para comparación)
+plt.subplot(1, 2, 2)
+plt.imshow(pooled_output, cmap='gray', extent=[0, relu_output.shape[1], relu_output.shape[0], 0])
+plt.title("Tras MaxPooling 4x4")
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+
+```
+::::
+:::
+
+# ¿Cómo aprende una red neuronal?
 
 ---
 
@@ -534,28 +665,529 @@ Cada neurona hace una operación: pondera entradas, suma, aplica una función.
 - Se ajustan los pesos de las conexiones para reducir el error.  
 - Este proceso se repite con millones de imágenes.  
 
-🔧 “Entrenar una red neuronal es como hacer IMRT: queremos encontrar la mejor combinación de pesos (parámetros) que cumplan unos objetivos y minimicen una función de coste.”
+:::{.callout-tip icon="true"}
+## Entrenamiento de una red neuronal
+Entrenar una red neuronal es como hacer IMRT: queremos encontrar la mejor combinación de pesos (parámetros) que cumplan unos objetivos y minimicen una función de coste.
+:::
 
 ---
 
-### 🔹 b) Función de coste = “Plan de calidad”
+## Tipos de Aprendizaje en Machine Learning
 
-- Ejemplo de función de pérdida para segmentación: penaliza si el contorno predicho no coincide con el real.  
-- Cuanto peor la predicción, mayor el coste.  
-- El algoritmo busca los pesos que minimicen ese coste.
-
-📌 Comparación útil:  
-- En planificación: DVH fuera de tolerancia = mal plan.  
-- En IA: contorno incorrecto = alto coste → se corrige.
+::: {.columns}
+:::: {.column}
+### ✅ Aprendizaje Supervisado
+- Se entrena con **datos etiquetados**
+- Cada entrada tiene una **respuesta conocida**
+- El modelo aprende a **predecir la etiqueta** a partir de la entrada
+::::
+:::: {.column}
+![](images/Chest-x-ray-images-from-Kaggle-dataset-a-Normal-lung-image-b-Bacterial-pneumonia.png)
+::::
+:::
 
 ---
 
-### 🔹 c) Optimización por retropropagación
+### 🔄 Aprendizaje No Supervisado 
+Se entrena con datos sin etiquetas
+
+El objetivo es descubrir patrones ocultos, como agrupaciones o estructuras
+
+::: {.columns}
+:::: {.column}
+![](images/george_clooney5.png){fig-align="center" height="300px"}
+::::
+:::: {.column}
+![](images/cluster_personas_objetos.jpeg){fig-align="center" height="300px"}
+::::
+:::
+
+---
+
+### 🧪 Aprendizaje Auto-supervisado 
+
+Genera sus propias etiquetas a partir de los datos
+
+Diseña tareas auxiliares para aprender representaciones útiles
+
+:::{.callout-tip icon="true"}
+## Ejemplo de aprendizaje auto-supervisado
+Enmascarar parte de una imagen y entrenar al modelo a reconstruirla
+:::
+
+---
+
+## {.smaller} 
+
+#### Resumen sobre los tipos de aprendizaje en IA
+
+| Tipo               | Etiquetas reales requeridas     | Objetivo principal                 | Ejemplos comunes                                 |
+|--------------------|----------------------------------|------------------------------------|--------------------------------------------------|
+| Supervisado        | Sí                              | Clasificación, regresión           | Diagnóstico médico, detección de fallos          |
+| No supervisado     | No                              | Agrupamiento, reducción            | Análisis exploratorio, clustering                |
+| Auto-supervisado   | No (usa etiquetas derivadas)    | Aprendizaje de representaciones    | Preentrenamiento, NLP, visión artificial         |
+
+---
+
+## {.smaller}
+
+#### Ejemplo: entrenamiento de una red neuronal de reconocimiento facial
+
+Cuatro clases, 150 archivos de 128x128 en color, 
+
+**Arquitectura de la red**
+
+| Layer (type)                    | Output Shape           |       Param # |
+|---------------------------------|------------------------|---------------|
+| conv2d (Conv2D)                 | (None, 126, 126, 32)   |           896 |
+| max_pooling2d (MaxPooling2D)    | (None, 63, 63, 32)     |             0 |
+| conv2d_1 (Conv2D)               | (None, 61, 61, 64)     |        18,496 |
+| max_pooling2d_1 (MaxPooling2D)  | (None, 30, 30, 64)     |             0 |
+| flatten (Flatten)               | (None, 57600)          |             0 |
+| dense (Dense)                   | (None, 128)            |     7,372,928 |
+| dropout (Dropout)               | (None, 128)            |             0 |
+| dense_1 (Dense)                 | (None, 4)              |           516 |
+
+- Número de parámetros ajustables (Memoria): **[7,392,836]{.alert} (28.20 MB)**
+- Tiempo de entrenamiento en un Apple Silicon M2: **11.63 secs**
+
+[**Exactitud del modelo: 96.67%**]{.alert}
+
+---
+
+:::{.callout-important icon="true"}
+## Degeneración del problema
+El número de parámetros a ajustar es tan elevado que no es un problema sencillo de resolver. Necesitamos que el software de entrenamiento siga alguna estrategia que nos guie hacia una solución válida.
+:::
+
+
+### 🔹 b) Optimización por retropropagación
 
 - Se calcula el error.  
 - Se propaga hacia atrás a través de la red.  
-- Se ajustan los pesos paso a paso con técnicas como descenso de gradiente.
+- Se ajustan los pesos paso a paso con técnicas como descenso de gradiente, actuando fundamentalmente sobre los parámetros que se identifican más relevantes.
 
-📌 **Mensaje final del bloque**:  
-No es magia: es matemáticas + prueba y error + millones de datos.
 
+# 🧠 Modelos de Inteligencia Artificial: Clasificación vs Regresión
+
+---
+
+## Naturaleza del problema {.smaller}
+
+### Clasificación
+
+- **Objetivo**: asignar una entrada a una o más **clases discretas**.
+- **Tipo de salida**: etiquetas categóricas (`'enfermo'`, `'sano'`, etc.) o códigos (`0`, `1`, `2`...).
+- **Ejemplos típicos**:
+  - Diagnóstico médico (tumor benigno vs maligno).
+  - Reconocimiento facial.
+  - Detección de spam en correos electrónicos.
+
+### Regresión
+
+- **Objetivo**: predecir un **valor continuo** a partir de las características de entrada.
+- **Tipo de salida**: numérico real.
+- **Ejemplos típicos**:
+  - Predicción de dosis en radioterapia.
+  - Estimación de precios.
+  - Predicción de temperatura.
+
+---
+
+## Estructura de modelos y activaciones
+
+| Dimensión          | Clasificación          | Regresión                           |
+| ------------------ | ---------------------- | ----------------------------------- |
+| Tipo de salida     | Etiqueta discreta      | Valor continuo                      |
+| Función de pérdida | Cross-entropy          | MSE / MAE                           |
+| Activación final   | Softmax / Sigmoid      | Lineal                              |
+| Métrica típica     | Accuracy, F1, AUC      | RMSE, R², MAE                       |
+| Ejemplos           | Diagnóstico, detección | Pronóstico, predicción cuantitativa |
+
+
+# Aplicación práctica de la inteligencia artificial en radioterapia
+ 
+---
+
+## Campos de aplicación
+
+- [**Registro deformable de imagen**]{.alert}
+- Delimitiación de estructuras (órganos de riesgo y volúmenes blanco)
+- Predicción de distribuciones de dosis
+  - Previsión del impacto del tratamiento
+  - Planificación automatizada
+
+:::{.callout-important icon="true"}
+## Relevancia
+El registro deformable puede servir como base para la solución de otros problemas planteados en radioterapia.
+:::
+
+---
+
+## Registro deformable de imagen {.smaller}
+
+> **Definción** 
+>
+> El *registro de imágenes* es el proceso de *alinear* dos o más imágenes obtenidas en diferentes momentos, desde diferentes dispositivos o con diferentes condiciones del paciente, de forma que *los mismos puntos anatómicos coincidan en todas ellas*. 
+> 
+> [Es **deformable** si se permiten **transformaciones locales no rígidas**, como *compresiones, expansiones y desplazamientos* no uniformes]{.alert}.
+
+
+[**Campos de aplicación del registro deformable**]{.alert}
+
+- **Radioterapia adaptativa**, donde se actualiza el plan según cambios anatómicos del paciente.
+
+- **Fusión de imágenes multimodalidad** (CT, MRI, PET).
+
+- **Propagación de estructuras** entre distintos estudios de imagen.
+
+- **Estimación de dosis acumulada** a lo largo de múltiples fracciones.
+
+---
+
+![](images/CTSimulacion.png)
+
+---
+
+![](images/CBCT.png)
+
+---
+
+![](images/CampoDeformacion.png)
+
+---
+
+### Métodos de realización del registro deformable
+
+| Método         | Precisión | Tiempo de cálculo | Multimodalidad | Aplicación clínica             |
+|----------------|-----------|-------------------|----------------|-------------------------------|
+| Demons         | Media     | Rápido            | No             | Frecuente                     |
+| B-splines      | Alta      | Medio-lento       | Parcial        | Muy usada                     |
+| MI             | Media     | Medio             | Sí             | CT-MRI / PET                  |
+| Deep Learning  | Alta      | Muy rápido        | Depende del modelo | En investigación y preclínica |
+
+:::{.callout-note icon="true"}
+## Métodos tradicionales
+Demons, B-splines y MI se implementan mediante *software convencional* y sirven de base para entrenar los modelos de Deep Learning.
+:::
+
+
+---
+
+## {.smaller}
+
+### 🧠 3. Métodos basados en aprendizaje profundo (Deep Learning DIR)
+
+**Redes convolucionales (CNNs)**  
+Aprenden directamente el campo de deformación a partir de un conjunto grande de pares de imágenes registradas.
+
+Algunos ejemplos: *VoxelMorph*, *DeepReg*, *SynthMorph*.
+
+**Ventajas:**
+
+- Inferencia muy rápida (una vez entrenadas).
+- Pueden generalizar bien si se entrena con suficiente diversidad de datos.
+
+**Limitaciones:**
+
+- Requieren bases de datos grandes y bien etiquetadas.
+- Pueden ser una “caja negra” difícil de validar clínicamente.
+
+---
+
+## Comparativa de modelos de Deep Learning para DIR {.smaller}
+
+::: columns
+:::: column
+### 🧠 VoxelMorph
+- **Supervisión**: No supervisado  
+- **Ventajas**:
+  - Inferencia muy rápida
+  - No requiere campos reales
+- **Limitaciones**:
+  - Menor adaptabilidad a dominios nuevos  
+- **Uso típico**: Registro intra-modal (MRI, CT)  
+- **Framework**: PyTorch / TensorFlow  
+- [Repositorio](https://github.com/voxelmorph/voxelmorph)
+::::
+
+:::: column
+### 🧠 DeepReg
+- **Supervisión**: Supervisado / No / Semi  
+- **Ventajas**:
+  - Flexible y modular
+  - Admite estructuras y máscaras  
+- **Limitaciones**:
+  - Mayor complejidad técnica  
+- **Uso típico**: Multimodal, longitudinal, supervisado  
+- **Framework**: TensorFlow 2  
+- [Repositorio](https://github.com/DeepRegNet/DeepReg)
+::::
+:::
+
+---
+
+## Comparativa de modelos de Deep Learning para DIR {.smaller}
+
+::: columns
+:::: column
+### 🧠 SynthMorph
+- **Supervisión**: Auto-supervisado  
+- **Ventajas**:
+  - No requiere datos reales registrados
+  - Útil para entrenamiento general
+- **Limitaciones**:
+  - Depende de la calidad de datos sintéticos  
+- **Uso típico**: Preentrenamiento, escenarios sin datos anotados  
+- **Framework**: PyTorch / TensorFlow  
+- [Repositorio](https://github.com/voxelmorph/synthmorph)
+::::
+:::
+
+---
+
+## Delimitación de volúmenes. Métodos por software tradicional {.smaller}
+
+::: {.columns}
+:::: {.column}
+### 1. Segmentación por umbral
+
+**Contexto clínico:** En radioterapia craneal (por ejemplo, para metástasis cerebrales o craneotomías postquirúrgicas), se utilizan imágenes de TC donde el hueso es claramente visible.
+
+**Aplicación:** Detección automática de la calota craneal o columna vertebral con un umbral alto (ej. >300 HU).
+
+**Limitación:** No distingue bien hueso cortical de estructuras calcificadas o implantes metálicos.
+::::
+:::: {.column}
+![El usuario fija los extremos del intervalo de número CT presente en la estructura.](images/Umbral.png)
+::::
+:::
+
+---
+
+## {.smaller}
+
+::: {.columns}
+:::: {.column}
+### 2. Crecimiento de regiones
+**Contexto clínico:** La vejiga u otros órganos tiene un contorno bastante definido en TC.
+
+**Aplicación:** El software de planificación puede sugerir automáticamente el contorno de la vejiga basado en una semilla y parámetros de intensidad.
+
+**Limitación:** Suele requerir postprocesado o correcciones manuales. Pobre desempeño si hay aire, catéteres o paredes irregulares.
+
+::::
+:::: {.column}
+![La cruz indica la semilla fijada por el usuario y el control de deslizamiento los parámetros de intensidad. Estos últimos suelen requerir reajustes iterativos](images/CrecimientoRegion.PNG)
+::::
+:::
+
+---
+
+## {.smaller}
+
+::: {.columns}
+:::: {.column}
+### 3. Contornos activos
+
+**Contexto clínico:** En tumores de ORL y otros, es crucial proteger la médula espinal.
+
+**Aplicación:** Una vez identificada la médula en cortes centrales, se usan *snakes* o algoritmos de contorno activo para propagarla en cortes adyacentes.
+
+**Limitación:** Pérdida de exactitud si la médula se curva o está comprimida por masa tumoral.
+::::
+:::: {.column}
+![En ARIA estos algoritmos vienen prefijados para algunos órganos concretos](images/Serpientes.png)
+::::
+:::
+
+---
+
+## Delimitación de volúmenes mediante atlas {.smaller}
+
+**Principio:**  
+Se utilizan imágenes previamente segmentadas (atlas) que se registran con la imagen del paciente.
+
+**Pasos clave:**  
+- Registro (rígido o deformable) del atlas a la imagen del paciente.  
+- Transferencia de las estructuras segmentadas.  
+- Fusión de múltiples atlas (si se usan varios).
+
+**Ventajas:**  
+- Buen rendimiento si el atlas representa bien la anatomía.  
+- Permite segmentación de estructuras complejas.
+
+**Limitaciones:**  
+- El registro deformable puede fallar en anatomías alteradas (tumores, cirugía).  
+- Requiere base de datos curada y bien segmentada.  
+- Lento en comparación con métodos automáticos modernos.
+
+---
+
+![](images/SmartSegmentation.png)
+
+---
+
+## Delimitación de volúmenes mediante IA basada en CNNs{.smaller}
+
+> La **delimitación de estructuras** es un proceso similar a la **segmentación de imágenes**
+
+:::{.callout-note icon="true"}
+## Definición
+La **segmentación de imágenes** es el proceso de dividir una imagen digital en regiones o segmentos significativos, agrupando los píxeles que comparten características similares (como color, intensidad o textura) para facilitar su análisis o interpretación. En medicina, se utiliza para identificar y delimitar automáticamente estructuras anatómicas o lesiones dentro de las imágenes.
+:::
+
+:::{.callout-tip icon="true"}
+## CNNs
+Las **redes neuronales convolucionales** (*CNNs*) aplican filtros convolucionales para procesar imágenes
+:::
+
+::: {.columns}
+:::: {.column width="60%"}
+### 🧠 CNNs en segmentación médica
+::::
+:::: {.column width="40%"}
+**Entrada:**  🖼️ Imagen médica (TC, RM, etc.)
+
+**Salida:**  🎯 Máscara de segmentación:
+
+- Binaria (órgano vs. fondo)  
+- Multiclase (varios órganos)
+::::
+:::
+
+---
+
+## {.smaller}
+
+🧱 Arquitecturas más comunes
+
+  🔹 U-Net (Ronneberger et al., 2015): arquitectura simétrica en forma de **U**.
+
+  - Tiene una fase de contracción (downsampling) y una fase de expansión (upsampling).
+  - Las conexiones de *skip* entre niveles permiten recuperar detalles espaciales finos.
+![](images/EthosU-net.png)
+
+---
+
+## {.smaller}
+
+### 🔹 Variantes modernas de CNNs para segmentación médica
+
+- **3D U-Net**  
+  Extiende U-Net a 3D para trabajar con volúmenes completos (TC/RM).
+
+- **V-Net**  
+  Similar a U-Net pero con convoluciones 3D desde cero.
+
+- **nnU-Net**  
+  Sistema autoajustable que adapta arquitectura y parámetros automáticamente.  
+  _Estándar de facto en competiciones._
+
+- **Attention U-Net**  
+  Introduce mecanismos de atención para enfocarse en regiones relevantes.
+
+- **Transformer-based (UNETR, TransUNet)**  
+  Combinan CNNs con Transformers para contexto global.  
+  Más potentes, pero requieren más datos y tiempo.
+
+---
+
+### ⚙️ Entrenamiento de modelos de segmentación con CNNs
+
+- **Datos de entrada:** Imágenes médicas (TC, RM, PET).  
+- **Etiquetas (GT):** Segmentaciones manuales hechas por expertos.  
+- **Función de pérdida:**  
+  - Dice loss  
+  - Cross-Entropy  
+- **Entrenamiento:**  
+  - Requiere GPU  
+  - Necesita grandes volúmenes de datos bien etiquetados
+
+---
+
+## {.smaller}
+
+### 🏥 Ejemplos clínicos reales de uso de CNNs
+
+| Región anatómica | Aplicación clínica | Beneficio |
+|------------------|--------------------|-----------|
+| Próstata         | Delimitación automática en RM para RT adaptativa | Ahorra tiempo, reduce variabilidad |
+| Cabeza y cuello  | Glándulas salivales, médula espinal, etc.        | Mejora precisión en regiones complejas |
+| Mama             | Segmentación de mama, pulmón, corazón            | Útil en VMAT e inspiración controlada |
+| Pulmón           | Tumor en TC 4D                                    | Facilita RT adaptativa con control respiratorio |
+| Cerebro (SRS)    | Lesiones múltiples en RM                          | Automatiza estructuras para radiocirugía |
+
+---
+
+## {.smaller}
+
+### 🧾 Sistemas comerciales basados en CNN
+
+| Sistema                    | Tecnología base        | Características clave |
+|----------------------------|------------------------|------------------------|
+| **Mirada DLCExpert**       | CNN tipo U-Net         | Modelos para próstata, mama, cabeza y cuello |
+| **MVision AI**             | CNN 3D + cloud         | Integración con ARIA, RayStation, Eclipse |
+| **Radformation AutoContour** | CNN U-Net 3D        | Web UI, modelos multisite |
+| **Limbus AI**              | nnU-Net adaptado       | Modelos clínicamente validados, rápida implementación |
+| **Varian Ethos / Eclipse AI** | DL propietario     | Integración directa en TPS (contornos iniciales) |
+| **RayStation MRS (ML Seg)** | CNN 3D              | Permite entrenar modelos propios o usar preentrenados |
+
+---
+
+## Predicción de distribuciones de dosis
+
+### Generalidades
+
+- La predicción de dosis con IA consiste en estimar distribuciones 3D de dosis a partir de:
+  - Imágenes del paciente (TC, RM, etc.)
+  - Contornos anatómicos (PTV, OARs)
+  - Prescripción de dosis
+- Puede emplearse como:
+  - Punto de partida para planificación
+  - Referencia de la calidad de la planificación
+  - Elemento en el flujo de trabajo de la radioterapia adaptativa
+---
+
+#### Motivación
+
+- La planificación manual es intensiva en tiempo y depende del operador
+- Variabilidad interplanificador significativa
+- Necesidad de adaptarse a cambios anatómicos en tratamientos largos
+- La IA permite predecir mapas de dosis de forma rápida y consistente
+
+---
+
+#### Enfoques comunes
+
+### Modelos supervisados
+
+- Entrenamiento sobre pares (entrada: anatomía / salida: dosis)
+- **Redes CNN 2D/3D** y **U-Net** dominan el panorama actual
+- Toman como entrada el volumen TC + contornos segmentados
+
+### Modelos generativos
+
+- **GANs (Generative Adversarial Networks)** y **VAEs**
+- Capaces de generar mapas de dosis más realistas
+
+---
+
+#### Aplicaciones clínicas
+
+- **Planificación automática**: predicción como plantilla inicial
+- **Radioterapia adaptativa**: estimación rápida de dosis diaria
+- **Control de calidad**: comparación dosis planificada vs IA
+- **Optimización de planes** guiada por mapas IA
+
+---
+
+### RapidPlan
+
+#### Planificación mediante bases de conocimiento 
+
+:::{.callout-note icon="true"}
+## Naturaleza 
+
+**RapidPlan** no es *Deep Learning* (no se entrena una red neuronal profunda), es una aplicación de *Machine Learning*
+:::
