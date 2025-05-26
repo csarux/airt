@@ -1,0 +1,126 @@
+
+---
+title: "Guion de presentación: Inteligencia Artificial en Radioterapia"
+format: html
+toc: true
+number-sections: true
+fontsize: 12pt
+---
+
+# Introducción
+
+Muy buenos días a todos y gracias por estar aquí.  
+Es un placer poder compartir esta sesión con compañeras y compañeros de dos mundos que siempre trabajan codo con codo: los Técnicos Superiores en Radioterapia y los Físicos Médicos. Hoy os quiero hablar de inteligencia artificial, sí, ese tema del que todo el mundo habla… pero desde una perspectiva muy nuestra, muy aplicada: la radioterapia.
+
+Y no, no os voy a hablar de ciencia ficción ni de robots que nos van a quitar el trabajo. Os voy a hablar de cómo la IA ya está ayudando —y puede ayudarnos aún más— en nuestro día a día en el hospital.
+
+# ¿Qué es la inteligencia artificial?
+
+La inteligencia artificial es una rama de la informática que busca que las máquinas puedan imitar funciones humanas como aprender, razonar, resolver problemas o tomar decisiones. En otras palabras: que el ordenador no solo calcule lo que le decimos, sino que 'aprenda' a partir de ejemplos.
+
+# Ejemplos cotidianos de IA
+
+Y esto no es ciencia de laboratorio. La IA está en nuestra vida diaria, todo el rato. Por ejemplo:
+
+- Cuando te llega un correo sospechoso y Gmail lo manda a la carpeta de spam.
+- Cuando Netflix te recomienda una serie que te engancha desde el primer capítulo.
+- Cuando usas un traductor automático, o hablas con un chatbot como… yo.
+- Y en medicina, claro: por ejemplo, para detectar tumores en mamografías o en otras imágenes.
+
+# ¿En qué se diferencia de un software tradicional?
+
+Esto es importante. ¿En qué se diferencia un programa de IA de un software tradicional, como los que usamos para planificar un tratamiento o calcular una dosis?
+
+El software tradicional funciona con instrucciones fijas. Tú le dices exactamente qué hacer: 'suma esto', 'haz esta fórmula', 'calcula esa curva'.
+
+En cambio, la IA no se basa en fórmulas predefinidas, sino que aprende a partir de ejemplos. Le damos datos, y a base de entrenarse con muchos casos, 'aprende' a resolver problemas nuevos.
+
+# Comparativa
+
+Aquí tenéis una tabla resumen para verlo claro:
+
+- El software tradicional está programado de forma explícita. La IA, en cambio, se entrena con datos.
+- El software clásico tiene una lógica fija. La IA es adaptable: si cambia el contexto, puede seguir funcionando bien.
+- En radioterapia, un ejemplo clásico de software sería el cálculo de dosis con fórmulas físicas.
+- Pero la IA puede hacer cosas como segmentar automáticamente una imagen médica.
+
+# Analogía culinaria
+
+Un software tradicional es como una receta de cocina: paso 1, paso 2, paso 3... Tú sigues las instrucciones, y si las sigues bien, te sale el plato.
+
+La IA, en cambio, es como un cocinero que va aprendiendo a base de probar. La primera vez igual se le quema un poco. La segunda le queda mejor. Y al final acaba haciéndolo perfecto, incluso con ingredientes distintos.
+
+# Tipos principales de IA
+
+## IA simbólica
+
+Se basa en reglas lógicas que alguien ha programado. Por ejemplo: si ves esto, haz aquello. Son sistemas explicables, pero poco flexibles.
+
+## IA conexionista (redes neuronales)
+
+Aquí ya hablamos de aprendizaje automático, de modelos que aprenden a partir de miles de ejemplos. Esto es lo que usamos, por ejemplo, en segmentación automática o en generación de imágenes sintéticas.
+
+# Aplicaciones en radioterapia
+
+Ahora que ya tenemos una idea general de qué es la IA, vamos a entrar en lo que nos interesa de verdad: ¿para qué sirve en radioterapia? ¿Dónde se está usando ya y qué nos puede aportar en el futuro cercano?
+
+Vamos a recorrer juntos estas aplicaciones. Veremos ejemplos, y lo más importante: hablaremos de qué pueden aportar a nuestro trabajo como técnicos y como físicos.
+
+Antes, una aclaración muy importante: cuando hablamos de IA en radioterapia, no estamos hablando de sustituir a profesionales. Estamos hablando de herramientas que ayudan a hacer el trabajo mejor, más rápido, y con más consistencia.
+
+# Segmentación automática
+
+Una de las primeras aplicaciones que ha llegado de forma práctica a nuestros centros es la **segmentación automática**.
+
+Los algoritmos de segmentación basados en IA pueden delinear órganos de riesgo y volúmenes diana con un nivel de precisión sorprendente. Esto no quiere decir que sustituyan el trabajo del técnico o del médico, sino que **aceleran el proceso y mejoran la reproducibilidad**.
+
+Además, en muchos casos podemos editar fácilmente los contornos generados. Esto nos ahorra tiempo, especialmente en localizaciones anatómicas complejas.
+
+# Generación de imágenes sintéticas
+
+Otro uso cada vez más extendido es la generación de **CT sintéticos a partir de CBCT o de RM**.
+
+¿Por qué es esto útil? Pues porque el CBCT no tiene calidad suficiente para el cálculo de dosis, pero sí nos da información anatómica del día del tratamiento. Si conseguimos transformar ese CBCT en un CT 'de verdad' mediante IA, podemos **hacer adaptación online** con mucho más fundamento.
+
+Lo mismo con la resonancia: si generamos un sCT a partir de una RM, podemos planificar sin necesidad de un escáner adicional.
+
+# Predicción de dosis y planificación automática
+
+Y más allá: la IA también se está usando para **predecir distribuciones de dosis** basadas en las estructuras del paciente. Es decir: sin hacer una optimización completa, el sistema ya nos da una idea de lo que se podría alcanzar, o nos propone una planificación inicial.
+
+Esto abre la puerta a sistemas de planificación automática o guiada por IA, que no sustituyen al planificador, pero que sí pueden ahorrar tiempo y facilitar el trabajo.
+
+# Validación y fiabilidad
+
+Todo esto suena muy bien… pero ¿podemos fiarnos?  
+¿Hasta qué punto estos sistemas están validados?
+
+Es una cuestión clave. En general, los sistemas basados en IA necesitan pasar por procesos de **validación muy rigurosos** antes de su uso clínico. Además, cada centro debe evaluar cómo se comportan en su entorno real.
+
+Aquí el papel de los físicos y los técnicos es fundamental: debemos conocer bien las limitaciones de los algoritmos, detectar errores y saber cuándo no debemos confiar ciegamente.
+
+# Seguridad y responsabilidad
+
+Y también hay que hablar de **responsabilidad**.
+
+Aunque una IA haya segmentado un órgano, quien valida ese contorno es un profesional. Aunque un algoritmo sugiera una planificación, quien decide si es válida o no es el equipo clínico.
+
+La IA es una herramienta. Potente, sí, pero una herramienta. La **responsabilidad clínica sigue siendo humana**.
+
+# El papel del técnico y del físico
+
+Entonces, ¿qué cambia para nosotros?
+
+Cambia que debemos **entender cómo funciona la IA**, saber cuándo confiar y cuándo revisar, aprender a usarla a nuestro favor.
+
+Los técnicos tendrán que aprender a validar segmentaciones, a ajustar parámetros de planificación guiada, a usar interfaces nuevas.
+
+Los físicos tendremos que incorporar estos sistemas a los flujos clínicos, validarlos, supervisarlos y formar a los demás.
+
+# Conclusión
+
+La IA no es una amenaza, es una oportunidad. Pero una oportunidad que exige conocimiento, criterio y formación.
+
+Y sobre todo, trabajo en equipo. Porque si algo ha demostrado la radioterapia moderna es que solo funciona si trabajamos todos juntos: médicos, técnicos, físicos.
+
+Gracias por vuestra atención.

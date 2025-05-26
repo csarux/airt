@@ -1182,6 +1182,8 @@ Las **redes neuronales convolucionales** (*CNNs*) aplican filtros convolucionale
 
 ---
 
+## {.smaller}
+
 ### RapidPlan
 
 #### Planificación mediante bases de conocimiento 
@@ -1190,4 +1192,163 @@ Las **redes neuronales convolucionales** (*CNNs*) aplican filtros convolucionale
 ## Naturaleza 
 
 **RapidPlan** no es *Deep Learning* (no se entrena una red neuronal profunda), es una aplicación de *Machine Learning*
+
+- Se entrena con:
+  - Curvas DVH de casos anteriores
+  - Relaciones espaciales entre estructuras
+
 :::
+
+- Herramienta de Varian integrada en Eclipse™
+- Utiliza modelos estadísticos entrenados con planes clínicos previos
+- Predice curvas DVH para OARs y PTVs en base a la anatomía del paciente
+- Se usa para generar objetivos de optimización en la planificación inversa
+
+:::{.callout-important icon="true"}
+## Objetivo 
+Predecir **DVH esperados**, no predicir mapas de dosis voxel a voxel
+:::
+
+---
+
+#### RapidPlan vs predicción de dosis con redes neuronales
+
+| Característica       | RapidPlan                       | Deep Learning (U-Net, GAN)         |
+|----------------------|----------------------------------|------------------------------------|
+| Tipo de modelo       | Regresión multivariable          | Red neuronal profunda              |
+| Datos de entrada     | Geometría + DVH                  | Imágenes + contornos + dosis       |
+| Salida               | DVH estimados                    | Mapa 3D de dosis voxel a voxel     |
+| Uso clínico          | Optimización asistida            | Predicción directa / validación    |
+| Madurez comercial    | Alta (clínicamente implantado)   | Media (en expansión)               |
+
+---
+
+## {.smaller}
+
+#### Entradas del modelo de RapidPlan™
+
+Los modelos se entrenan a partir de:
+
+- Geometría de los campos de tratamiento
+- Comportamiento del haz de fotones
+- Geometría del target y niveles de dosis prescrita
+- Heurísticas clínicas (cómo la disposición de campos influye en el ahorro de tejidos sanos)
+
+#### ¿Qué es el GED (Geometry-based Expected Dose)?
+
+- Es una representación intermedia basada en la geometría del paciente
+- Se calcula rápidamente a partir de:
+  - El TC de planificación
+  - Las estructuras delineadas
+  - La geometría de los campos
+- Estima cómo debería distribuirse la dosis basándose únicamente en la geometría
+
+---
+
+## {.smaller} 
+
+#### Aprendizaje estadístico en RapidPlan™
+
+- Se aplica **análisis de componentes principales (PCA)** a:
+  - Histogramas DVH reales
+  - Histogramas GED de entrenamiento
+- Los coeficientes del PCA se introducen en modelos de **regresión supervisada**
+- Esto permite predecir el DVH esperable en un nuevo paciente  
+  a partir de su GED volume histogram
+
+![La configuración comienza por la selección de casos (patología, estrategía de tratamiento) y de las estructuras (PTVs y OARs) que se contemplaran en el modelo](images/ModelConf.png){fig-align="center"}
+
+---
+
+![El sistema considera los histogramas de cada órgano para todos los casos](images/ModelMandibulaDVH.png){height="300px"}
+
+![El sistema particulariza los histogramas considerando los volumenes en los que las proyecciones del campo de tratamiento intersecta el órgano](images/ModelMandibulaInFieldDVH.png){height="300px"}
+
+---
+
+#### Predicción de DVH mediante regresión supervisada
+
+1. Se calcula el GED volume histogram para cada estructura
+2. Se asume que este está **altamente correlacionado** con el DVH real (por proximidad al target)
+
+![Mediante un análisis de componentes principales se realiza una regresión que relaciona el DVH en dosis real con el estimado en GED](images/ModelMandibulaRegressionPlot.png)
+
+---
+
+## {.smaller}
+
+#### Salida del modelo: DVH + objetivos de optimización
+
+- El modelo predice el DVH de las estructuras modeladas
+- Genera los **objetivos de optimización** que permitirán a Eclipse alcanzar ese DVH
+- Así se estandariza la calidad del plan y se acelera la planificación
+
+![Dentro del rango de DVHs esperados RapidPlan fija su línea objetovo en el extremo inferior](images/ModeloEstimacionDVH.png)
+
+---
+
+## Generación de CT sintéticos mediante inteligencia artificial
+
+:::{.callout-important icon="true"}
+## Necesidad de imágenes sintéticas
+- Radioterapia adaptativa y MRI-only workflows requieren mapas precisos de HU.
+- CBCT y RM no son ideales para cálculo directo de dosis.
+- Solución: generar CT sintético (sCT) mediante IA.
+:::
+
+- **CBCT**: baja calidad HU, artefactos de reconstrucción, escasa precisión dosimétrica.
+- **MRI**: Gran contraste anatómico pero sin HU y con importantes artefactos geométricos.
+
+---
+
+## {.smaller}
+
+::: {.columns}
+:::: {.column}
+#### CBCT
+**Métodos**
+
+- **CNN**: mapeo voxel a voxel CBCT → sCT.
+- **GAN**: mejoran realismo, generalización.
+- **CycleGAN**: entrenamiento sin correspondencia exacta (non-paired).
+- Nuevas arquitecturas: U-Net++, Vision Transformers.
+
+::::
+:::: {.column}
+#### RMI
+**Métodos**
+
+- **Single-sequence CNN**: T1/T2 → HU.
+- **Multi-sequence fusion**: mejora precisión.
+- **GANs**: alta fidelidad visual y dosimétrica.
+- Métodos directos (regresión HU) vs segmentación-clasificación.
+
+**Retos técnicos**
+
+- Registro MRI-CT durante entrenamiento.
+- Distorsiones geométricas (B0, susceptibilidad).
+- Variabilidad entre pacientes y escáneres.
+::::
+:::
+
+#### Validación dosimétrica
+
+- Comparación DVHs: sCT vs CT real.
+- Evaluación con gamma index.
+- Tolerancias clínicas para aceptación.
+
+---
+
+## Limitaciones y reflexiones
+
+::: {.callout-note icon="true"}
+## Mirada al futuro
+En unos años, será difícil concebir una radioterapia sin herramientas de IA. Y por eso es importante que todos —no solo los ingenieros— entendamos cómo funcionan.
+:::
+
+**No es magia**: La IA no es perfecta. Aprende de lo que le damos. Si los datos están sesgados... el modelo también.
+
+**Responsabilidad profesional**: Aunque tengamos herramientas automáticas, seguimos siendo los responsables de supervisar, validar y decidir.
+
+**Ética y transparencia**: Breve mención a la necesidad de trazabilidad, validación, y el papel del profesional humano.
+
