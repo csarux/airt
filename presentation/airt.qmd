@@ -405,7 +405,7 @@ fig.show()
 
 # Ejemplos de minimización. Aplicación a la radioterapia
 
-## Optimación de fluencias para tratamientos VMAT
+## Optimización de fluencias para tratamientos VMAT
 
 ![Tratamiento adyuvante de un hemicuello. Dosis de prescripción 66 Gy al primario y 56.1 Gy a las cadenas ganglionares](images/testORL.png)
 
@@ -812,7 +812,8 @@ El número de parámetros a ajustar es tan elevado que no es un problema sencill
 ## Campos de aplicación
 
 - [**Registro deformable de imagen**]{.alert}
-- Delimitiación de estructuras (órganos de riesgo y volúmenes blanco)
+- Generación de CT sintéticos
+- Delimitación de estructuras (órganos de riesgo y volúmenes blanco)
 - Predicción de distribuciones de dosis
   - Previsión del impacto del tratamiento
   - Planificación automatizada
@@ -876,7 +877,7 @@ Demons, B-splines y MI se implementan mediante *software convencional* y sirven 
 
 ## {.smaller}
 
-### 🧠 3. Métodos basados en aprendizaje profundo (Deep Learning DIR)
+### 🧠 Métodos basados en aprendizaje profundo (Deep Learning DIR)
 
 **Redes convolucionales (CNNs)**  
 Aprenden directamente el campo de deformación a partir de un conjunto grande de pares de imágenes registradas.
